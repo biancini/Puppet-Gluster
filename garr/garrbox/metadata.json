@@ -1,0 +1,24 @@
+{
+  "name": "garr-garrbox",
+  "author": "GARR",
+  "description": "",
+  "license": "GPLv3",
+  "project_page": "",
+  "source": "",
+  "summary": "A Shibboleth2 puppet module that installs and configures GlusterFS for Garrbox.",
+  "version": "0.1",
+  "checksums": {
+    "Modulefile": "902975434585e0d088e9c418ccecf9a3",
+    "lib/facter/listmounts.rb": "d41d8cd98f00b204e9800998ecf8427e",
+    "lib/facter/listvolumes.rb": "f1cb45535b0eaed42f7a0c6ac0b46a37",
+    "manifests/definitions/mounts.pp": "c70af0485892e5de64cf33ec4e16a4a2",
+    "manifests/definitions/volumes.pp": "dd9aaf2e21ea538a9e217e5237a7fce4",
+    "manifests/init.pp": "4e76fb57f797e869a0da6ad62da0d016"
+  },
+  "dependencies": [
+    {
+      "name": "thias/glusterfs",
+      "version_requirement": "\u003e\u003d0.0.3"
+    }
+  ]
+}

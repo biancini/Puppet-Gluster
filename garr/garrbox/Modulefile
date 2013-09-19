@@ -1,0 +1,10 @@
+name 'garr-garrbox'
+version '0.1'
+
+author 'GARR'
+license 'GPLv3'
+project_page ''
+source ''
+summary 'A Shibboleth2 puppet module that installs and configures GlusterFS for Garrbox.'
+description ''
+dependency 'thias/glusterfs', '>=0.0.3'

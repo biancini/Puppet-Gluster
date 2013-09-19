@@ -15,9 +15,9 @@
     "README.md": "a75daafafe9ad49d48a807c71ad77c82",
     "manifests/client.pp": "74e43a729b883f8974aed8f8efb6e0cb",
     "manifests/mount.pp": "a29a690ac21efcb7541062f05d217c51",
-    "manifests/peer.pp": "62965aca98957d9e38b18833fd70dc2b",
-    "manifests/server.pp": "c711852b7165a4eb74bb6aae3138dff4",
-    "manifests/volume.pp": "9b5c325c2918befb7015b1b534998e6a"
+    "manifests/peer.pp": "750abaa720d7f0f242e20db1c95275a0",
+    "manifests/server.pp": "3608e440e862198b27083761c53be69c",
+    "manifests/volume.pp": "a1099b3ceb41d91008a9955248864834"
   },
   "dependencies": []
 }

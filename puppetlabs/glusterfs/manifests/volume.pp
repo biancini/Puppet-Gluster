@@ -12,13 +12,15 @@ define glusterfs::volume (
 ) {
 
   exec { "gluster volume create ${title}":
-    command => "/usr/sbin/gluster volume create ${title} ${create_options}",
+    command => "gluster volume create ${title} ${create_options}",
     creates => "/var/lib/glusterd/vols/${title}",
+    unless  => "gluster volume info ${title} | grep 'Volume Name'",
+    path    => [ '/usr/sbin', '/usr/bin', '/sbin', '/bin' ],
     require => Class['glusterfs::server'],
   }
-
+  
   exec { "/usr/sbin/gluster volume start ${title}":
-    unless  => "[ \"`gluster volume info ${title} | egrep '^Status:'`\" == 'Status: Started' ]",
+    unless  => "gluster volume info ${title} | egrep '^Status:' | grep 'Started'",
     path    => [ '/usr/sbin', '/usr/bin', '/sbin', '/bin' ],
     require => Exec["gluster volume create ${title}"],
   }

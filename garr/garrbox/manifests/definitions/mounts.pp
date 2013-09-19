@@ -1,4 +1,0 @@
-define garrbox::mounts () {
-  
-  
-}

@@ -9,11 +9,12 @@
   "version": "0.1",
   "checksums": {
     "Modulefile": "902975434585e0d088e9c418ccecf9a3",
-    "lib/facter/listmounts.rb": "d41d8cd98f00b204e9800998ecf8427e",
-    "lib/facter/listvolumes.rb": "f1cb45535b0eaed42f7a0c6ac0b46a37",
-    "manifests/definitions/mounts.pp": "c70af0485892e5de64cf33ec4e16a4a2",
-    "manifests/definitions/volumes.pp": "dd9aaf2e21ea538a9e217e5237a7fce4",
-    "manifests/init.pp": "4e76fb57f797e869a0da6ad62da0d016"
+    "lib/puppet/parser/functions/concat.rb": "f8d25a35539a52e1b344fbb8dbb262a0",
+    "lib/puppet/parser/functions/listvolumes.rb": "2dfa2798934caa5e240c1c44ac3543ae",
+    "manifests/classes/mounts.pp": "c4d141cf4cdc2e71372e553d43978e57",
+    "manifests/classes/volumes.pp": "bef673cbc19c762c6029d6385d46e7eb",
+    "manifests/definitions/volume.pp": "04e92fed954382f92945b6280140d4e8",
+    "manifests/init.pp": "1ef6a7dc6bfbf031f46464c05dd82eeb"
   },
   "dependencies": [
     {

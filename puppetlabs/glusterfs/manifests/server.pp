@@ -20,7 +20,7 @@ class glusterfs::server (
 
   # Main package and service it provides
   package { 'glusterfs-server': ensure => installed }
-  service { 'glusterd':
+  service { 'glusterfs-server':
     enable    => true,
     ensure    => running,
     hasstatus => true,

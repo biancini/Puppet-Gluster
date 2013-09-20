@@ -8,12 +8,11 @@
   "summary": "GlusterFS module",
   "version": "0.0.3",
   "checksums": {
-    ".project.swp": "edfd6232f4b461d1af94798370511ff7",
     "ChangeLog": "a51dbccc9d3712e64f98080f5265ce26",
     "LICENSE": "63f96c99cc44c3d16af914ff2568e0a4",
     "Modulefile": "5f03f43bf1df3dc1392c7b1c3c168bf1",
     "README.md": "a75daafafe9ad49d48a807c71ad77c82",
-    "manifests/client.pp": "74e43a729b883f8974aed8f8efb6e0cb",
+    "manifests/client.pp": "6485226393a113fc149e5e2a31aa0e4f",
     "manifests/mount.pp": "a29a690ac21efcb7541062f05d217c51",
     "manifests/peer.pp": "750abaa720d7f0f242e20db1c95275a0",
     "manifests/server.pp": "3608e440e862198b27083761c53be69c",

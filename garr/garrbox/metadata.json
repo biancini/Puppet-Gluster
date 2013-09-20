@@ -8,18 +8,26 @@
   "summary": "A Shibboleth2 puppet module that installs and configures GlusterFS for Garrbox.",
   "version": "0.1",
   "checksums": {
-    "Modulefile": "902975434585e0d088e9c418ccecf9a3",
-    "lib/puppet/parser/functions/concat.rb": "f8d25a35539a52e1b344fbb8dbb262a0",
-    "lib/puppet/parser/functions/listvolumes.rb": "2dfa2798934caa5e240c1c44ac3543ae",
-    "manifests/classes/mounts.pp": "c4d141cf4cdc2e71372e553d43978e57",
-    "manifests/classes/volumes.pp": "bef673cbc19c762c6029d6385d46e7eb",
-    "manifests/definitions/volume.pp": "04e92fed954382f92945b6280140d4e8",
+    "Modulefile": "5b368596c17d934903cfa8e4ccee4466",
+    "lib/puppet/parser/functions/concat.rb": "23768f6b9b4d7d038cbec53c66f8df36",
+    "lib/puppet/parser/functions/keys.rb": "01461e689853b22af8d3ca075a14c526",
+    "lib/puppet/parser/functions/listbricks.rb": "697c346f6af55ab0dc8cb4ec4a9e42e0",
+    "lib/puppet/parser/functions/listvolumes.rb": "a8ecf49603890503cc53e3bcb789fae7",
+    "manifests/classes/mounts.pp": "a63350f8737031a5a902a985592e6c60",
+    "manifests/classes/volumes.pp": "ab88f5083de914acfa7c7649745b8609",
+    "manifests/definitions/brick.pp": "923febac183a9e13448116b6a3e75c29",
+    "manifests/definitions/mount.pp": "f9389360aff33dcf5344a664edd85230",
+    "manifests/definitions/volume.pp": "aaad17558f16b63f51ffe743882cc41a",
     "manifests/init.pp": "1ef6a7dc6bfbf031f46464c05dd82eeb"
   },
   "dependencies": [
     {
       "name": "thias/glusterfs",
       "version_requirement": "\u003e\u003d0.0.3"
+    },
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": "\u003e\u003d3.2.0"
     }
   ]
 }

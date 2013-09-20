@@ -1,5 +1,18 @@
-class garrbox::mounts () {
+class garrbox::mounts (
+  $dbuser      = undef,
+  $dbpasswd    = undef,
+  $dbhost      = '127.0.0.1',
+  $dbname      = 'garrbox',
+  $tabnamev    = 'volumes',
+  $tabnameb    = 'bricks',
+  $colstatus   = 'status',
+  $colname     = 'name',
+) {
   
-  #HOSTNAME-OR-IPADDRESS:/VOLNAME MOUNTDIR glusterfs defaults,_netdev,log-level=WARNING,log-file=/var/log/gluster.log 0 0
+  $volume_list = listvolumes($dbuser, $dbpasswd, true, $dbhost, $dbname, $tabnamev, $colstatus, $colname)
+  
+  garrbox::mount { $volume_list:
+    
+  }
   
 }

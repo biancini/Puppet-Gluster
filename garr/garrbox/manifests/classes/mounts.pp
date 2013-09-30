@@ -1,18 +1,14 @@
 class garrbox::mounts (
   $dbuser      = undef,
   $dbpasswd    = undef,
-  $dbhost      = '127.0.0.1',
-  $dbname      = 'garrbox',
-  $tabnamev    = 'volumes',
-  $tabnameb    = 'bricks',
-  $colstatus   = 'status',
-  $colname     = 'name',
+  $api_host    = 'http://localhost',
 ) {
   
-  $volume_list = listvolumes($dbuser, $dbpasswd, true, $dbhost, $dbname, $tabnamev, $colstatus, $colname)
+  $volumes_hash = listvolumes(true, $api_host)
+  $volume_list = keys($volumes_hash)
   
   garrbox::mount { $volume_list:
-    
+    all_volumes => $::volume_hash,
   }
   
 }

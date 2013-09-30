@@ -1,19 +1,8 @@
 class garrbox::volumes (
-  $dbuser      = undef,
-  $dbpasswd    = undef,
-  $dbhost      = '127.0.0.1',
-  $dbname      = 'garrbox',
-  $tabnamev    = 'volumes',
-  $tabnameb    = 'bricks',
-  $colstatus   = 'status',
-  $colname     = 'name',
-  $colquota    = 'quota',
-  $colvolname  = 'volname',
-  $colhost     = 'host',
-  $colbrickdir = 'brickdir',
+  $api_host    = 'http://localhost',
 ) {
   
-  $volumes_hash = listvolumes($dbuser, $dbpasswd, false, $dbhost, $dbname, $tabnamev, $colstatus, $colname, $colquota)
+  $volumes_hash = listvolumes(false, $api_host)
   $volume_list = keys($volumes_hash)
   
   class { 'glusterfs::server':
@@ -25,31 +14,14 @@ class garrbox::volumes (
 	  },
 	}
 	
-	$create_bricks = listbricks($dbuser, $dbpasswd, 'host', $::ipaddress, $dbhost, $dbname, $tabnameb, $colstatus, $colvolname, $colhost, $colbrickdir)
+	$create_bricks = listbricks('host', $::ipaddress, $api_host)
   garrbox::brick { $create_bricks:
-    dbuser      => $dbuser,
-    dbpasswd    => $dbpasswd,
-    dbhost      => $dbhost,
-    dbname      => $dbname,
-    tabnameb    => $tabnameb,
-    colstatus   => $colstatus,
-    colhost     => $colhost,
-    colbrickdir => $colbrickdir,
+    api_host    => $api_host,
   }
 	
   garrbox::volume { $volume_list:
-    dbuser      => $dbuser,
-    dbpasswd    => $dbpasswd,
     all_volumes => $::volume_hash,
-    dbhost      => $dbhost,
-    dbname      => $dbname,
-    tabnameb    => $tabnameb,
-    tabnamev    => $tabnamev,
-    colname     => $colname,
-    colstatus   => $colstatus,
-    colvolname  => $colvolname,
-    colhost     => $colhost,
-    colbrickdir => $colbrickdir,
+    api_host    => $api_host,
     require     => Class['glusterfs::server'],
   }
   

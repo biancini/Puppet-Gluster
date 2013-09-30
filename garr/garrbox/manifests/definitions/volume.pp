@@ -1,16 +1,6 @@
 define garrbox::volume (
-  $dbuser,
-  $dbpasswd,
   $all_volumes = undef,
-  $dbhost      = undef,
-  $dbname      = undef,
-  $tabnamev    = undef,
-  $tabnameb    = undef,
-  $colname     = undef,
-  $colstatus   = undef,
-  $colvolname  = undef,
-  $colhost     = undef,
-  $colbrickdir = undef,
+  $api_host   = 'http://localhost',
 ) {
   
   if $all_volumes == undef {
@@ -31,7 +21,7 @@ define garrbox::volume (
     }
   }
   
-  $volume_bricks = listbricks($dbuser, $dbpasswd, 'volume', $current_volname, $dbhost, $dbname, $tabnameb, $colstatus, $colvolname, $colhost, $colbrickdir)
+  $volume_bricks = listbricks('volume', $current_volname, $api_host)
   notice("Volume bricks = ${volume_bricks}")
   if ($volume_bricks != '') {
 	  glusterfs::volume { $current_volname:
@@ -49,13 +39,13 @@ define garrbox::volume (
 	    command => "gluster volume quota ${current_volname} limit-usage / ${current_quota}GB",
 	    unless  => "gluster volume info ${current_volname} | grep 'features.limit-usage: /:${current_quota}GB'",
 	    path    => [ '/usr/sbin', '/usr/bin', '/sbin', '/bin' ],
-	  } ->
+	  } #->
 	  
-	  exec { "Update DB volume $name":
-	    command => "echo \"UPDATE ${tabnamev} SET ${colstatus} = 1 WHERE ${colname} = '${name}'\" | mysql -h ${dbhost} -u ${dbuser} --password=${dbpasswd} ${dbname}",
-	    path    => [ '/usr/sbin', '/usr/bin', '/sbin', '/bin' ],
-	    unless  => "echo \"SELECT * FROM ${tabnamev} WHERE ${colstatus} = 1 AND ${colname} = '${name}'\" | mysql -h ${dbhost} -u ${dbuser} --password=${dbpasswd} ${dbname} | grep ${name}",
-	  }
+	  #exec { "Update DB volume $name":
+	  #  command => "echo \"UPDATE ${tabnamev} SET ${colstatus} = 1 WHERE ${colname} = '${name}'\" | mysql -h ${dbhost} -u ${dbuser} --password=${dbpasswd} ${dbname}",
+	  #  path    => [ '/usr/sbin', '/usr/bin', '/sbin', '/bin' ],
+	  #  unless  => "echo \"SELECT * FROM ${tabnamev} WHERE ${colstatus} = 1 AND ${colname} = '${name}'\" | mysql -h ${dbhost} -u ${dbuser} --password=${dbpasswd} ${dbname} | grep ${name}",
+	  #}
   }
   
 }

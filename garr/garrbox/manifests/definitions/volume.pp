@@ -21,7 +21,7 @@ define garrbox::volume (
     }
   }
   
-  $volume_bricks = listbricks('volume', $current_volname, $api_host)
+  $volume_bricks = listbricks($api_host, 'volume', $current_volname)
   notice("Volume bricks = ${volume_bricks}")
   if ($volume_bricks != '') {
 	  glusterfs::volume { $current_volname:

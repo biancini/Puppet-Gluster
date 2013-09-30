@@ -2,9 +2,6 @@ class garrbox::volumes (
   $api_host    = 'http://localhost',
 ) {
   
-  $volumes_hash = listvolumes(false, $api_host)
-  $volume_list = keys($volumes_hash)
-  
   class { 'glusterfs::server':
 	  peers => $::hostname ? {
 	    'cloud-mi-03'             => undef,
@@ -14,14 +11,19 @@ class garrbox::volumes (
 	  },
 	}
 	
-	$create_bricks = listbricks('host', $::ipaddress, $api_host)
+	$create_bricks = listbricks($api_host, 'host', $::ipaddress)
+	notice("Brick list ${create_bricks}")
   garrbox::brick { $create_bricks:
     api_host    => $api_host,
     require     => Package['ruby-json', 'libjson-ruby'],
   }
+  
+  $volumes_hash = listvolumes($api_host, false)
+  $volume_list = keys($volumes_hash)
+  notice("Volume list ${volume_list}")
 	
   garrbox::volume { $volume_list:
-    all_volumes => $::volume_hash,
+    all_volumes => $volumes_hash,
     api_host    => $api_host,
     require     => [Package['ruby-json', 'libjson-ruby'], Class['glusterfs::server']],
   }

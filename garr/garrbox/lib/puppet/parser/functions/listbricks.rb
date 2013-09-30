@@ -3,69 +3,75 @@ module Puppet::Parser::Functions
 This function generates a list of Gluster bricks by host or by volume interrogating a MySQL database.
 Paremeters to this function are:
 
+  - the url_base to be used for queries to the REST API
   - the field to be used as a filter
   - the value to be used as a filter
-  - the url_base to be used for queries to the REST API (defaults to 'http://127.0.0.1')
 
 *Examples:*
 
-    listbricks("volume", "volprova1", "http://127.0.0.1")
+    listbricks("http://localhost", "volume", "volprova1")
 
 Would result in: "10.0.0.1:/media/brick1 10.0.0.2:/media/brick2"
 
-    listbricks("host", "10.0.0.1", "http://localhost")
+    listbricks("http://localhost", "host", "10.0.0.1")
 
 Would result in: [ "/media/brick1", "/media/brick2" ]
     EOS
   ) do |arguments|
 
     raise(Puppet::ParseError, "listbricks(): Wrong number of arguments " +
-      "given (#{arguments.size} for 2)") if arguments.size < 2
+      "given (#{arguments.size} for 3)") if arguments.size < 3
 
-    filterf     = arguments[0]
-    filterv     = arguments[1]
+    api_host    = arguments[0]
+    filterf     = arguments[1]
+    filterv     = arguments[2]
     
-    api_host    = 'http://localhost'
-    api_host    = arguments[2] if arguments[2]
-    Puppet.debug("Called function with parameters: filterf = #{filterf}, filterv = #{filterv}, api_host = #{api_host}")
+    debug "Called function with parameters: filterf = #{filterf}, filterv = #{filterv}, api_host = #{api_host}"
     
-    require 'open-uri'
-    require 'json'
+    begin
+      require 'open-uri'
+      require 'json'
     
-    Puppet.debug("Opening URL: #{api_host}/garrbox/volumes")
-    response = open("#{api_host}/garrbox/volumes")
-    volumes = JSON.parse(response.read())
-    Puppet.debug("URL opened")
+      volumes = {}
+      uri = URI.parse("#{api_host}/garrbox/volumes")
+      debug "Opening URL: #{uri}"
+      uri.open { |response|
+        volumes = JSON.parse(response.read())
+      }
     
-    if filterf == 'host'
-	  returnval = []
-      volumes.each do |name, vol|
-        vol['bricks'].each do |brick|
-          if brick['status'] == 'NEW' and brick['host'] == filterv
-            returnval.push(brick['brick_dir'])
-          end
-        end
-      end
-    elsif filterf == 'volume'
-      returnval = ""
-      volumes.each do |name, vol|
-        if name == filterv and vol['status'] == 'NEW'
-          allbricks = true
+      if filterf == 'host'
+	    returnval = []
+        volumes.each do |name, vol|
           vol['bricks'].each do |brick|
-            if brick['status'] == 'EXS' or brick['status'] == 'ACT'
-              returnval = returnval + ' ' + brick['host'] + ":" + brick['brick_dir']
-            else
-              allbricks = false
+            if brick['status'] == 'NEW' and brick['host'] == filterv
+              returnval.push(brick['brick_dir'])
             end
           end
-          returnval = '' unless allbricks
         end
-      end
+      elsif filterf == 'volume'
+        returnval = ""
+        volumes.each do |name, vol|
+          if name == filterv and vol['status'] == 'NEW'
+            allbricks = true
+            vol['bricks'].each do |brick|
+              if brick['status'] == 'EXS' or brick['status'] == 'ACT'
+                returnval = returnval + ' ' + brick['host'] + ":" + brick['brick_dir']
+              else
+                allbricks = false
+              end
+            end
+            returnval = '' unless allbricks
+          end
+        end
       	
-      returnval = returnval.strip
+        returnval = returnval.strip
+      end
+      
+      debug "Returned value = #{returnval}"
+	  return returnval
+    rescue
+      debug "Missing required ruby packages."
+      return ""
     end
-
-	Puppet.debug("Returned value = #{returnval}")
-	return returnval
   end
 end

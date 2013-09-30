@@ -17,12 +17,13 @@ class garrbox::volumes (
 	$create_bricks = listbricks('host', $::ipaddress, $api_host)
   garrbox::brick { $create_bricks:
     api_host    => $api_host,
+    require     => Package['ruby-json', 'libjson-ruby'],
   }
 	
   garrbox::volume { $volume_list:
     all_volumes => $::volume_hash,
     api_host    => $api_host,
-    require     => Class['glusterfs::server'],
+    require     => [Package['ruby-json', 'libjson-ruby'], Class['glusterfs::server']],
   }
   
 }

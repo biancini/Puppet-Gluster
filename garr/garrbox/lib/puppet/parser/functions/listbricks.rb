@@ -13,7 +13,7 @@ Paremeters to this function are:
 
 Would result in: "10.0.0.1:/media/brick1 10.0.0.2:/media/brick2"
 
-    listbricks("host", "10.0.0.1", "http://127.0.0.1")
+    listbricks("host", "10.0.0.1", "http://localhost")
 
 Would result in: [ "/media/brick1", "/media/brick2" ]
     EOS
@@ -25,14 +25,17 @@ Would result in: [ "/media/brick1", "/media/brick2" ]
     filterf     = arguments[0]
     filterv     = arguments[1]
     
-    api_host    = 'http://127.0.0.1'
-    api_host    = arguments[3] if arguments[3]
+    api_host    = 'http://localhost'
+    api_host    = arguments[2] if arguments[2]
+    Puppet.debug("Called function with parameters: filterf = #{filterf}, filterv = #{filterv}, api_host = #{api_host}")
     
     require 'open-uri'
     require 'json'
     
+    Puppet.debug("Opening URL: #{api_host}/garrbox/volumes")
     response = open("#{api_host}/garrbox/volumes")
-    volumes = JSON.parse(response)
+    volumes = JSON.parse(response.read())
+    Puppet.debug("URL opened")
     
     if filterf == 'host'
 	  returnval = []
@@ -62,6 +65,7 @@ Would result in: [ "/media/brick1", "/media/brick2" ]
       returnval = returnval.strip
     end
 
+	Puppet.debug("Returned value = #{returnval}")
 	return returnval
   end
 end

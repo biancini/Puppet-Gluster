@@ -11,14 +11,14 @@
     "Modulefile": "5b368596c17d934903cfa8e4ccee4466",
     "lib/puppet/parser/functions/concat.rb": "23768f6b9b4d7d038cbec53c66f8df36",
     "lib/puppet/parser/functions/keys.rb": "01461e689853b22af8d3ca075a14c526",
-    "lib/puppet/parser/functions/listbricks.rb": "2000f7fa7358313468ade2e5f509f877",
-    "lib/puppet/parser/functions/listvolumes.rb": "f3cdb595d29da53bc38cf82377070195",
-    "manifests/classes/mounts.pp": "95797a853a0fcd0e048d4807e19874b4",
-    "manifests/classes/volumes.pp": "9c69d8ceac46fd949b982959416cbcca",
+    "lib/puppet/parser/functions/listbricks.rb": "ce1993f0f781602958ec9bfc40e974ba",
+    "lib/puppet/parser/functions/listvolumes.rb": "fb7476977d3fe531238faf1688b63fa1",
+    "manifests/classes/mounts.pp": "1eba2b360d70f648ce4a366fada1667c",
+    "manifests/classes/volumes.pp": "2c96699e91bd51857aad0c2c2c7014a7",
     "manifests/definitions/brick.pp": "8a79ca17fbf1fc961b8bdd5aafe298d4",
     "manifests/definitions/mount.pp": "0f735fbd111458011cc17c92abbf8c0b",
     "manifests/definitions/volume.pp": "8c136a93b6abafdb1d6213f4c7070414",
-    "manifests/init.pp": "1ef6a7dc6bfbf031f46464c05dd82eeb"
+    "manifests/init.pp": "9cee0fabc5655ba534d23b3656383860"
   },
   "dependencies": [
     {

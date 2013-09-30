@@ -1,6 +1,4 @@
 class garrbox::mounts (
-  $dbuser      = undef,
-  $dbpasswd    = undef,
   $api_host    = 'http://localhost',
 ) {
   
@@ -9,6 +7,7 @@ class garrbox::mounts (
   
   garrbox::mount { $volume_list:
     all_volumes => $::volume_hash,
+    require     => Package['ruby-json', 'libjson-ruby'],
   }
   
 }

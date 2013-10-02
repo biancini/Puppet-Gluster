@@ -39,13 +39,17 @@ define garrbox::volume (
 	    command => "gluster volume quota ${current_volname} limit-usage / ${current_quota}GB",
 	    unless  => "gluster volume info ${current_volname} | grep 'features.limit-usage: /:${current_quota}GB'",
 	    path    => [ '/usr/sbin', '/usr/bin', '/sbin', '/bin' ],
-	  } #->
+	  } ->
 	  
-	  #exec { "Update DB volume $name":
-	  #  command => "echo \"UPDATE ${tabnamev} SET ${colstatus} = 1 WHERE ${colname} = '${name}'\" | mysql -h ${dbhost} -u ${dbuser} --password=${dbpasswd} ${dbname}",
-	  #  path    => [ '/usr/sbin', '/usr/bin', '/sbin', '/bin' ],
-	  #  unless  => "echo \"SELECT * FROM ${tabnamev} WHERE ${colstatus} = 1 AND ${colname} = '${name}'\" | mysql -h ${dbhost} -u ${dbuser} --password=${dbpasswd} ${dbname} | grep ${name}",
-	  #}
+	  post_restapi { "Update volume $name":
+      url               => "${api_host}/garrbox/volumes",
+      body              => "{ '${name}': { 'status': 'ACT' } }",
+      user              => 'basicuser',
+      password          => 'password',
+      check_field_name  => "['${name}']['status']",
+      check_field_value => "'ACT'",
+      check_different   => true,
+	  }
   }
   
 }

@@ -26,13 +26,13 @@ class garrbox::volumes (
   }
   
   # Create volumes
-  $volumes_hash = listvolumes($api_host, false, false)
-  notice("Volume list ${volumes_hash}")
-  $volume_list = keys($volumes_hash)
-  notice("Volume list ${volume_list}")
+  $newvolumes_hash = listvolumes($api_host, false, false)
+  notice("Volume list ${newvolumes_hash}")
+  $newvolume_list = keys(newvolumes_hash)
+  notice("Volume list ${newvolume_list}")
 	
-  garrbox::volume { $volume_list:
-    all_volumes => $volumes_hash,
+  garrbox::volume { $newvolume_list:
+    all_volumes => $newvolumes_hash,
     api_host    => $api_host,
     api_user    => $api_user,
     api_passwd  => $api_passwd,
@@ -40,14 +40,14 @@ class garrbox::volumes (
     require     => [Package['ruby-json', 'libjson-ruby'], Class['glusterfs::server']],
   }
   
-  # Addd bricks to existing volumes
-  $volumes_hash = listvolumes($api_host, false, true)
-  notice("Volume list ${volumes_hash}")
-  $volume_list = keys($volumes_hash)
-  notice("Volume list ${volume_list}")
+  # Add bricks to existing volumes
+  $addvolumes_hash = listvolumes($api_host, false, true)
+  notice("Volume list ${addvolumes_hash}")
+  $addvolume_list = keys($addvolumes_hash)
+  notice("Volume list ${addvolume_list}")
   
-  garrbox::volume { $volume_list:
-    all_volumes => $volumes_hash,
+  garrbox::volume { $addvolume_list:
+    all_volumes => $addvolumes_hash,
     api_host    => $api_host,
     api_user    => $api_user,
     api_passwd  => $api_passwd,

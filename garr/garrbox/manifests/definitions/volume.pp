@@ -47,7 +47,7 @@ define garrbox::volume (
 	  } ->
 	  
 	  post_restapi { "Update volume $name":
-      url               => "${api_host}/garrbox/volumes",
+      url               => "${api_host}/garrbox/api/volumes",
       body              => "{ '${name}' => { 'status' => 'ACT' } }",
       user              => $api_user,
       password          => $api_passwd,

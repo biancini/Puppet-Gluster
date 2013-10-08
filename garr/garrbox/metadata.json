@@ -14,12 +14,12 @@
     "lib/puppet/parser/functions/listbricks.rb": "dcbbaa7b903d627fad2ec3c53d67f7fd",
     "lib/puppet/parser/functions/listvolumes.rb": "fad369338d0e4d43dcde2c55bb62802d",
     "lib/puppet/parser/functions/splitbricklist.rb": "4208d9cf72f3454724a7dd7d36c6c489",
-    "lib/puppet/type/post_restapi.rb": "9bc12401540e05cd572b0d40396a911d",
+    "lib/puppet/type/post_restapi.rb": "389d6b58c747d17c365c605a5b400633",
     "manifests/classes/mounts.pp": "981572ed1d123d6b3809abe75abfde4c",
     "manifests/classes/volumes.pp": "e79b15f0a993acf32a1c98bf64cd341f",
     "manifests/definitions/brick.pp": "ddc0811adedbee9441e1a16ca150f798",
     "manifests/definitions/mount.pp": "0f735fbd111458011cc17c92abbf8c0b",
-    "manifests/definitions/volume.pp": "e9d5c057b88a543e0bdb287ba292e9e0",
+    "manifests/definitions/volume.pp": "5af3b298d86b8fcf932cbf0663f743a3",
     "manifests/init.pp": "1ef6a7dc6bfbf031f46464c05dd82eeb"
   },
   "types": [

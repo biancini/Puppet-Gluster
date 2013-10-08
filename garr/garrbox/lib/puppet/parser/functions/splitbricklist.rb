@@ -22,7 +22,7 @@ Would result in: ["/media/volprova1"]
     brickv = bricklist.split(' ')
     brickv.each do |curbrick|
       values = curbrick.split(':')
-      if fitlerip != '' and values[0] == filterip
+      if filterip != '' and values[0] == filterip
         returnval.push(values[1])
       end
     end

@@ -68,7 +68,7 @@ Would result in: [ "/media/brick1", "/media/brick2" ]
       elsif filterf == 'oldvolume'
         returnval = ""
         volumes.each do |name, vol|
-          if name == filterv and vol['status'] == 'NEW'
+          if name == filterv and vol['status'] == 'ACT'
             allbricks = true
             vol['bricks'].each do |brick|
               if brick['status'] == 'EXS'

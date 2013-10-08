@@ -80,6 +80,27 @@ module Puppet
 			      response.error!
 			  end
 			end
+			
+			def post(uri_str, body, limit = 10)
+			  require 'uri'
+              require 'net/http'
+              require 'json'
+			
+			  # You should choose better exception.
+			  raise ArgumentError, 'HTTP redirect too deep' if limit == 0
+			
+			  url = URI.parse(uri_str)
+			  req = Net::HTTP::Post.new(url.path, { 'User-Agent' => 'Puppet call to REST API' })
+			  #req.add_field "Content-Type", "application/xml"
+              req.body = body
+			  response = Net::HTTP.start(url.host, url.port) { |http| http.request(req) }
+			  case response
+			    when Net::HTTPSuccess     then response
+			    when Net::HTTPRedirection then fetch(response['location'], limit - 1)
+			    else
+			      response.error!
+			  end
+			end
 
 			def retrieve
 			    if resource[:check_field_name]
@@ -87,7 +108,7 @@ module Puppet
                         request = fetch(resource[:url])
 						response = JSON.parse(request.body)
                         
-                        read_val     = eval("reponse" + resource[:check_field_name])
+                        read_val     = eval("response" + resource[:check_field_name])
                         expected_val = eval(resource[:check_field_value])
                         
                         if resource[:check_different]
@@ -115,17 +136,7 @@ module Puppet
 				debug("Execute_mysql[check_different] = " + resource[:check_different].to_s + ".")
 				
 				begin 
-					require 'uri'
-                    require 'net/http'
-                    require 'json'
-            
-                    request = Net::HTTP::Post.new(resource[:url])
-                    #request.add_field "Content-Type", "application/xml"
-                    request.body = resource[:body]
-
-                    uri = URI.parse(resource[:url])
-                    http = Net::HTTP.new(uri.host, uri.port)
-                    response = http.request(request)
+                    request = post(resource[:url], resource[:body])
 				rescue Exception => e
 					raise Puppet::Error, "Error while executing POST #{cursql}."
 				end # begin

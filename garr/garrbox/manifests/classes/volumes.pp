@@ -28,7 +28,7 @@ class garrbox::volumes (
   # Create volumes
   $newvolumes_hash = listvolumes($api_host, false, false)
   notice("Volume list ${newvolumes_hash}")
-  $newvolume_list = keys(newvolumes_hash)
+  $newvolume_list = keys($newvolumes_hash)
   notice("Volume list ${newvolume_list}")
 	
   garrbox::volume { $newvolume_list:

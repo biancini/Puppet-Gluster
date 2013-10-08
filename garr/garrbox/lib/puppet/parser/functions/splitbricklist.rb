@@ -16,7 +16,7 @@ Would result in: ["/media/volprova1"]
     bricklist = arguments[0]
     filterip = ''
     
-    filterip  = arguments[1] if argument[1]
+    filterip  = arguments[1] if arguments[1]
     
     returnval = []
     brickv = bricklist.split(' ')

@@ -81,26 +81,21 @@ module Puppet
 			  end
 			end
 			
-			def post(uri_str, body, limit = 10)
-			  require 'uri'
-              require 'net/http'
-              require 'json'
-			
-			  # You should choose better exception.
-			  raise ArgumentError, 'HTTP redirect too deep' if limit == 0
-			
-			  url = URI.parse(uri_str)
-			  req = Net::HTTP::Post.new(url.path, { 'User-Agent' => 'Puppet call to REST API' })
-			  #req.add_field "Content-Type", "application/xml"
-              req.body = body
-			  response = Net::HTTP.start(url.host, url.port) { |http| http.request(req) }
-			  case response
-			    when Net::HTTPSuccess     then response
-			    when Net::HTTPRedirection then fetch(response['location'], limit - 1)
-			    else
-			      response.error!
-			  end
-			end
+            def post(uri_str, body, limit = 10)
+                require 'uri'
+                require 'net/http'
+                require 'net/https'
+                require 'json'
+
+                # You should choose better exception.
+                raise ArgumentError, 'HTTP redirect too deep' if limit == 0
+
+                url = URI.parse(uri_str)
+                response = Net::HTTP.start(url.host, url.port)
+                req = Net::HTTP::Post.new(url.path, initheader = {'Content-Type' =>'application/json'})
+                req.body = "[ " + body.to_json + " ]"
+                response.request(req)
+            end
 
 			def retrieve
 			    if resource[:check_field_name]
@@ -136,7 +131,7 @@ module Puppet
 				debug("Execute_mysql[check_different] = " + resource[:check_different].to_s + ".")
 				
 				begin 
-                    request = post(resource[:url], resource[:body])
+                    post(resource[:url] + "/", eval(resource[:body]))
 				rescue Exception => e
 					raise Puppet::Error, "Error while executing POST #{cursql}."
 				end # begin

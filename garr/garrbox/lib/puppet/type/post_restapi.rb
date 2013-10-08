@@ -84,16 +84,19 @@ module Puppet
             def post(uri_str, body, limit = 10)
                 require 'uri'
                 require 'net/http'
-                require 'net/https'
                 require 'json'
-
+				debug("Ciao1")
                 # You should choose better exception.
                 raise ArgumentError, 'HTTP redirect too deep' if limit == 0
-
+				
                 url = URI.parse(uri_str)
+                debug("Ciao2")
                 response = Net::HTTP.start(url.host, url.port)
-                req = Net::HTTP::Post.new(url.path, initheader = {'Content-Type' =>'application/json'})
+                debug("Ciao3")
+                req = Net::HTTP::Post.new(url.path, {'User-Agent' => 'Puppet call to REST API', 'Content-Type' =>'application/json'})
+                debug("Ciao4")
                 req.body = "[ " + body.to_json + " ]"
+                debug("Ciao5")
                 response.request(req)
             end
 

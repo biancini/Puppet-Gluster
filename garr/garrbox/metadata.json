@@ -13,7 +13,7 @@
     "lib/puppet/parser/functions/keys.rb": "01461e689853b22af8d3ca075a14c526",
     "lib/puppet/parser/functions/listbricks.rb": "e12b0fdcfe6e8eeab86ba22cccb8ed7d",
     "lib/puppet/parser/functions/listvolumes.rb": "2e7c4b40a924656a4ac5e2d59531f0bc",
-    "lib/puppet/type/post_restapi.rb": "dea47a8ad4d7dcdd49cc2222a26e94bc",
+    "lib/puppet/type/post_restapi.rb": "7c22e0a6d0b071bdf823234c1b8da1df",
     "manifests/classes/mounts.pp": "3d70208f2b6467dae4ab78e9f17a37cf",
     "manifests/classes/volumes.pp": "acee63fef7331279c46a411faafcece0",
     "manifests/definitions/brick.pp": "eb2ccd61caba27eea791ace5d45211a8",

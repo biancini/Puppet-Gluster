@@ -1,6 +1,8 @@
 define garrbox::volume (
   $all_volumes = undef,
-  $api_host   = 'http://localhost',
+  $api_host    = 'http://localhost',
+  $api_user    = undef,
+  $api_passwd  = undef,
 ) {
   
   if $all_volumes == undef {
@@ -44,8 +46,8 @@ define garrbox::volume (
 	  post_restapi { "Update volume $name":
       url               => "${api_host}/garrbox/volumes",
       body              => "{ '${name}': { 'status': 'ACT' } }",
-      user              => 'basicuser',
-      password          => 'password',
+      user              => $api_user,
+      password          => $api_passwd,
       check_field_name  => "['${name}']['status']",
       check_field_value => "'ACT'",
       check_different   => true,

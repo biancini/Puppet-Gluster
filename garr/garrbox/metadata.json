@@ -16,9 +16,9 @@
     "lib/puppet/type/post_restapi.rb": "842afc2bfd7253426f124f4d0e12f63a",
     "manifests/classes/mounts.pp": "3d70208f2b6467dae4ab78e9f17a37cf",
     "manifests/classes/volumes.pp": "d055429117adbf0b5af4b0f32fcc2ec1",
-    "manifests/definitions/brick.pp": "8a79ca17fbf1fc961b8bdd5aafe298d4",
+    "manifests/definitions/brick.pp": "eb2ccd61caba27eea791ace5d45211a8",
     "manifests/definitions/mount.pp": "0f735fbd111458011cc17c92abbf8c0b",
-    "manifests/definitions/volume.pp": "76a0f0489eafa068f7fc98f339a57fe8",
+    "manifests/definitions/volume.pp": "8146eb5860fbdf75a0a71da851a6fc37",
     "manifests/init.pp": "1ef6a7dc6bfbf031f46464c05dd82eeb"
   },
   "types": [

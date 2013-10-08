@@ -5,11 +5,11 @@ node 'cloud-mi-03.mib.infn.it' {
 
 
 	class { "garrbox::volumes":
-		api_host => 'http://cloud-mi-03.mib.infn.it',
+		api_host => 'http://cloud-mi-03.mib.infn.it/primologin',
 	}
 
 	class { "garrbox::mounts":
-		api_host => 'http://cloud-mi-03.mib.infn.it',
+		api_host => 'http://cloud-mi-03.mib.infn.it/primologin',
 	}
 }
 

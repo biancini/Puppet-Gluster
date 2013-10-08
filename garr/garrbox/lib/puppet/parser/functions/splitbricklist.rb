@@ -11,7 +11,7 @@ Would result in: ["/media/volprova1"]
   ) do |arguments|
 
     raise(Puppet::ParseError, "splitbricklist(): Wrong number of arguments " +
-      "given (#{arguments.size} for 2)") if arguments.size < 2
+      "given (#{arguments.size} for 1)") if arguments.size < 1
 
     bricklist = arguments[0]
     filterip = ''

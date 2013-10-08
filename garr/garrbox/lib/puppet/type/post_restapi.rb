@@ -127,11 +127,11 @@ module Puppet
 				debug("Execute_mysql[name] = " + resource[:name] + ".")
 				debug("Execute_mysql[url] = " + resource[:url] + ".")
 				debug("Execute_mysql[body] = " + resource[:body] + ".")
-				debug("Execute_mysql[user] = " + resource[:user] + ".")
-				debug("Execute_mysql[password] = " + resource[:password] + ".")
-				debug("Execute_mysql[check_field_name] = " + resource[:check_field_name] + ".")
-				debug("Execute_mysql[check_field_value] = " + resource[:check_field_value] + ".")
-				debug("Execute_mysql[check_different] = " + resource[:check_different].to_s + ".")
+				debug("Execute_mysql[user] = " + resource[:user] + ".") if resource[:user] 
+				debug("Execute_mysql[password] = " + resource[:password] + ".") if resource[:password]
+				debug("Execute_mysql[check_field_name] = " + resource[:check_field_name] + ".") if resource[:check_field_name]
+				debug("Execute_mysql[check_field_value] = " + resource[:check_field_value] + ".") if resource[:check_field_value]
+				debug("Execute_mysql[check_different] = " + resource[:check_different].to_s + ".") if resource[:check_different]
 				
 				begin 
                     post(resource[:url] + "/", eval(resource[:body]))

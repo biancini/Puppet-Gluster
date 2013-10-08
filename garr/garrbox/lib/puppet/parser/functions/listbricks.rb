@@ -33,7 +33,7 @@ Would result in: [ "/media/brick1", "/media/brick2" ]
       require 'json'
     
       volumes = {}
-      uri = URI.parse("#{api_host}/garrbox/volumes")
+      uri = URI.parse("#{api_host}/garrbox/api/volumes")
       debug "Opening URL: #{uri}"
       uri.open { |response|
         volumes = JSON.parse(response.read())

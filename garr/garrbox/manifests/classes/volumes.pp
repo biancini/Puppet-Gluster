@@ -24,6 +24,7 @@ class garrbox::volumes (
   }
   
   $volumes_hash = listvolumes($api_host, false)
+  notice("Volume list ${volumes_hash}")
   $volume_list = keys($volumes_hash)
   notice("Volume list ${volume_list}")
 	

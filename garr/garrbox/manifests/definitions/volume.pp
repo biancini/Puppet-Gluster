@@ -76,6 +76,7 @@ define garrbox::volume (
       
       exec { "Add required bricks":
         command => "gluster volume add-brick ${current_volname} ${addbricks_array}",
+        unless  => "gluster volume info volprova1 | egrep -I `echo '${addbricks_array}' | sed 's/ /|/g'`",
         path    => [ '/usr/sbin', '/usr/bin', '/sbin', '/bin' ],
       } ->
       

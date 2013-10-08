@@ -19,6 +19,7 @@ class garrbox::volumes (
     api_host    => $api_host,
     api_user    => $api_user,
     api_passwd  => $api_passwd,
+    operation   => 'create',
     require     => Package['ruby-json', 'libjson-ruby'],
   }
   

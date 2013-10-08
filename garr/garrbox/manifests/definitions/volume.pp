@@ -25,7 +25,10 @@ define garrbox::volume (
   
   $volume_bricks = listbricks($api_host, 'volume', $current_volname)
   notice("Volume bricks = ${volume_bricks}")
+  
   if ($volume_bricks != '') {
+    $bricks_array = splitbricklist($volume_bricks, $ipaddress) 
+    
 	  glusterfs::volume { $current_volname:
 	    #create_options => "replica 2 ${volume_bricks}",
 	    create_options => $volume_bricks,
@@ -45,12 +48,20 @@ define garrbox::volume (
 	  
 	  post_restapi { "Update volume $name":
       url               => "${api_host}/garrbox/volumes",
-      body              => "{ '${name}': { 'status': 'ACT' } }",
+      body              => "{ '${name}' => { 'status' => 'ACT' } }",
       user              => $api_user,
       password          => $api_passwd,
       check_field_name  => "['${name}']['status']",
       check_field_value => "'ACT'",
       check_different   => true,
+	  } ->
+	  
+	  garrbox::brick { $bricks_array:
+	    api_host    => $api_host,
+	    api_user    => $api_user,
+	    api_passwd  => $api_passwd,
+	    operation   => 'activate',
+	    require     => Package['ruby-json', 'libjson-ruby'],
 	  }
   }
   

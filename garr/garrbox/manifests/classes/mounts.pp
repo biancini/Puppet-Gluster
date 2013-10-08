@@ -1,5 +1,7 @@
 class garrbox::mounts (
   $api_host    = 'http://localhost',
+  $api_user    = undef,
+  $api_passwd  = undef,
 ) {
   
   $volumes_hash = listvolumes($api_host, true)

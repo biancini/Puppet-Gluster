@@ -56,7 +56,7 @@ Would result in: { 'testvolume1' => {'quota' => 10}, 'testvolume2' => {'quota' =
               addvol = false
               vol['bricks'].each do |brick|
                 if brick['status'] == 'EXS'
-                  addvol = false
+                  addvol = true
                 end
               end
               

@@ -4,6 +4,7 @@ class garrbox::volumes (
   $api_passwd  = undef,
 ) {
   
+  # Install required packages and create GlusterFS ring
   class { 'glusterfs::server':
 	  peers => $::hostname ? {
 	    'cloud-mi-03'             => undef,
@@ -13,6 +14,7 @@ class garrbox::volumes (
 	  },
 	}
 	
+	# Create bricks on the current server
 	$create_bricks = listbricks($api_host, 'host', $::ipaddress)
 	notice("Brick list ${create_bricks}")
   garrbox::brick { $create_bricks:
@@ -23,7 +25,8 @@ class garrbox::volumes (
     require     => Package['ruby-json', 'libjson-ruby'],
   }
   
-  $volumes_hash = listvolumes($api_host, false)
+  # Create volumes
+  $volumes_hash = listvolumes($api_host, false, false)
   notice("Volume list ${volumes_hash}")
   $volume_list = keys($volumes_hash)
   notice("Volume list ${volume_list}")
@@ -33,6 +36,22 @@ class garrbox::volumes (
     api_host    => $api_host,
     api_user    => $api_user,
     api_passwd  => $api_passwd,
+    operation   => 'create',
+    require     => [Package['ruby-json', 'libjson-ruby'], Class['glusterfs::server']],
+  }
+  
+  # Addd bricks to existing volumes
+  $volumes_hash = listvolumes($api_host, false, true)
+  notice("Volume list ${volumes_hash}")
+  $volume_list = keys($volumes_hash)
+  notice("Volume list ${volume_list}")
+  
+  garrbox::volume { $volume_list:
+    all_volumes => $volumes_hash,
+    api_host    => $api_host,
+    api_user    => $api_user,
+    api_passwd  => $api_passwd,
+    operation   => 'addbrick',
     require     => [Package['ruby-json', 'libjson-ruby'], Class['glusterfs::server']],
   }
   

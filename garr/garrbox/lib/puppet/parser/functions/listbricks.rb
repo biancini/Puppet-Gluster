@@ -9,7 +9,7 @@ Paremeters to this function are:
 
 *Examples:*
 
-    listbricks("http://localhost", "volume", "volprova1")
+    listbricks("http://localhost", "newvolume", "volprova1")
 
 Would result in: "10.0.0.1:/media/brick1 10.0.0.2:/media/brick2"
 
@@ -48,13 +48,30 @@ Would result in: [ "/media/brick1", "/media/brick2" ]
             end
           end
         end
-      elsif filterf == 'volume'
+      elsif filterf == 'newvolume'
         returnval = ""
         volumes.each do |name, vol|
           if name == filterv and vol['status'] == 'NEW'
             allbricks = true
             vol['bricks'].each do |brick|
               if brick['status'] == 'EXS' or brick['status'] == 'ACT'
+                returnval = returnval + ' ' + brick['host'] + ":" + brick['brick_dir']
+              else
+                allbricks = false
+              end
+            end
+            returnval = '' unless allbricks
+          end
+        end
+      	
+        returnval = returnval.strip
+      elsif filterf == 'oldvolume'
+        returnval = ""
+        volumes.each do |name, vol|
+          if name == filterv and vol['status'] == 'NEW'
+            allbricks = true
+            vol['bricks'].each do |brick|
+              if brick['status'] == 'EXS'
                 returnval = returnval + ' ' + brick['host'] + ":" + brick['brick_dir']
               else
                 allbricks = false

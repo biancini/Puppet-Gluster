@@ -5,6 +5,7 @@ Paremeters to this function are:
 
   - the url_base to be used for queries to the REST API
   - a flag indicating if the query is for mount purpose (defaults to false)
+  - a flag indicating if only volumes with new bricks has to be returned (defaults to false)
 
 *Examples:*
 
@@ -19,8 +20,10 @@ Would result in: { 'testvolume1' => {'quota' => 10}, 'testvolume2' => {'quota' =
 
     api_host  = arguments[0] if arguments[0]
     mountlist = false
+    newbricks = false
     
     mountlist = arguments[1] if arguments[1]
+    newbricks = arguments[2] if arguments[2]
     
     debug "Called function with parameters: mountlist = #{mountlist}, api_host = #{api_host}"
 
@@ -46,13 +49,37 @@ Would result in: { 'testvolume1' => {'quota' => 10}, 'testvolume2' => {'quota' =
         end
       else
         returnval = {}
-        volumes.each do |name, vol|
-          if vol['status'] == 'NEW'
-            returnval[name] = {}
-            returnval[name]['name'] = name
-            vol['properties'].each do |prop|
-              if prop['key_name'] == 'quota_dir'
-                returnval[name]['quota'] = prop['base_value']
+        
+        if newbricks
+          volumes.each do |name, vol|
+            if vol['status'] == 'ACT'
+              addvol = false
+              vol['bricks'].each do |brick|
+                if brick['status'] == 'EXS'
+                  addvol = false
+                end
+              end
+              
+              if addvol
+                returnval[name] = {}
+                returnval[name]['name'] = name
+                vol['properties'].each do |prop|
+                  if prop['key_name'] == 'quota_dir'
+                    returnval[name]['quota'] = prop['base_value']
+                  end
+                end
+              end
+            end
+          end
+        else
+          volumes.each do |name, vol|
+            if vol['status'] == 'NEW'
+              returnval[name] = {}
+              returnval[name]['name'] = name
+              vol['properties'].each do |prop|
+                if prop['key_name'] == 'quota_dir'
+                  returnval[name]['quota'] = prop['base_value']
+                end
               end
             end
           end

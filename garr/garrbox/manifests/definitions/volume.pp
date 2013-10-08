@@ -3,6 +3,7 @@ define garrbox::volume (
   $api_host    = 'http://localhost',
   $api_user    = undef,
   $api_passwd  = undef,
+  $operation   = 'create',
 ) {
   
   if $all_volumes == undef {
@@ -23,46 +24,70 @@ define garrbox::volume (
     }
   }
   
-  $volume_bricks = listbricks($api_host, 'volume', $current_volname)
-  notice("Volume bricks = ${volume_bricks}")
-  
-  if ($volume_bricks != '') {
-    $bricks_array = splitbricklist($volume_bricks, $ipaddress) 
-    
-	  glusterfs::volume { $current_volname:
-	    #create_options => "replica 2 ${volume_bricks}",
-	    create_options => $volume_bricks,
-	  } ->
-	
-	  exec { "${current_volname}-quota-on":
-	    command => "gluster volume quota ${current_volname} enable",
-	    unless  => "gluster volume info ${current_volname} | grep 'features.quota: on'",
-	    path    => [ '/usr/sbin', '/usr/bin', '/sbin', '/bin' ],
-	  } ->
+  if $operation == "create" {
+	  $volume_bricks = listbricks($api_host, 'newvolume', $current_volname)
+	  notice("Volume bricks = ${volume_bricks}")
 	  
-	  exec { "${current_volname}-quota":
-	    command => "gluster volume quota ${current_volname} limit-usage / ${current_quota}GB",
-	    unless  => "gluster volume info ${current_volname} | grep 'features.limit-usage: /:${current_quota}GB'",
-	    path    => [ '/usr/sbin', '/usr/bin', '/sbin', '/bin' ],
-	  } ->
-	  
-	  post_restapi { "Update volume $name":
-      url               => "${api_host}/garrbox/api/volumes",
-      body              => "{ '${name}' => { 'status' => 'ACT' } }",
-      user              => $api_user,
-      password          => $api_passwd,
-      check_field_name  => "['${name}']['status']",
-      check_field_value => "'ACT'",
-      check_different   => true,
-	  } ->
-	  
-	  garrbox::brick { $bricks_array:
-	    api_host    => $api_host,
-	    api_user    => $api_user,
-	    api_passwd  => $api_passwd,
-	    operation   => 'activate',
-	    require     => Package['ruby-json', 'libjson-ruby'],
+	  if ($volume_bricks != '') {
+	    $bricks_array = splitbricklist($volume_bricks, $ipaddress) 
+	    
+		  glusterfs::volume { $current_volname:
+		    #create_options => "replica 2 ${volume_bricks}",
+		    create_options => $volume_bricks,
+		  } ->
+		
+		  exec { "${current_volname}-quota-on":
+		    command => "gluster volume quota ${current_volname} enable",
+		    unless  => "gluster volume info ${current_volname} | grep 'features.quota: on'",
+		    path    => [ '/usr/sbin', '/usr/bin', '/sbin', '/bin' ],
+		  } ->
+		  
+		  exec { "${current_volname}-quota":
+		    command => "gluster volume quota ${current_volname} limit-usage / ${current_quota}GB",
+		    unless  => "gluster volume info ${current_volname} | grep 'features.limit-usage: /:${current_quota}GB'",
+		    path    => [ '/usr/sbin', '/usr/bin', '/sbin', '/bin' ],
+		  } ->
+		  
+		  post_restapi { "Update volume $name":
+	      url               => "${api_host}/garrbox/api/volumes",
+	      body              => "{ '${name}' => { 'status' => 'ACT' } }",
+	      user              => $api_user,
+	      password          => $api_passwd,
+	      check_field_name  => "['${name}']['status']",
+	      check_field_value => "'ACT'",
+	      check_different   => true,
+		  } ->
+		  
+		  garrbox::brick { $bricks_array:
+		    api_host    => $api_host,
+		    api_user    => $api_user,
+		    api_passwd  => $api_passwd,
+		    operation   => 'activate',
+		    require     => Package['ruby-json', 'libjson-ruby'],
+		  }
 	  }
+  }
+  elsif $operation == "addbrick" {
+    $volume_bricks = listbricks($api_host, 'oldvolume', $current_volname)
+    notice("Volume bricks = ${volume_bricks}")
+    
+    if ($volume_bricks != '') {
+      $bricks_array = split($volume_bricks, ' ') 
+      
+      exec { $bricks_array:
+        command => "gluster add-brick ${current_volname} ${::self}",
+        unless  => "gluster volume info ${current_volname} | grep '${::self}'",
+        path    => [ '/usr/sbin', '/usr/bin', '/sbin', '/bin' ],
+      } ->
+      
+      garrbox::brick { $bricks_array:
+        api_host    => $api_host,
+        api_user    => $api_user,
+        api_passwd  => $api_passwd,
+        operation   => 'activate',
+        require     => Package['ruby-json', 'libjson-ruby'],
+      }
+    }
   }
   
 }

@@ -4,7 +4,8 @@ class garrbox::mounts (
   $api_passwd  = undef,
 ) {
   
-  $volumes_hash = listvolumes($api_host, true)
+  # Mount volumes
+  $volumes_hash = listvolumes($api_host, true, false)
   $volume_list = keys($volumes_hash)
   
   garrbox::mount { $volume_list:

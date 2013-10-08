@@ -1,5 +1,7 @@
 class garrbox::volumes (
   $api_host    = 'http://localhost',
+  $api_user    = undef,
+  $api_passwd  = undef,
 ) {
   
   class { 'glusterfs::server':
@@ -15,6 +17,8 @@ class garrbox::volumes (
 	notice("Brick list ${create_bricks}")
   garrbox::brick { $create_bricks:
     api_host    => $api_host,
+    api_user    => $api_user,
+    api_passwd  => $api_passwd,
     require     => Package['ruby-json', 'libjson-ruby'],
   }
   
@@ -25,6 +29,8 @@ class garrbox::volumes (
   garrbox::volume { $volume_list:
     all_volumes => $volumes_hash,
     api_host    => $api_host,
+    api_user    => $api_user,
+    api_passwd  => $api_passwd,
     require     => [Package['ruby-json', 'libjson-ruby'], Class['glusterfs::server']],
   }
   

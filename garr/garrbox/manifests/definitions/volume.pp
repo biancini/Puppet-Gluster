@@ -25,15 +25,15 @@ define garrbox::volume (
   }
   
   if $operation == "create" {
-	  $volume_bricks = listbricks($api_host, 'newvolume', $current_volname)
-	  notice("Volume bricks = ${volume_bricks}")
+	  $newvolume_bricks = listbricks($api_host, 'newvolume', $current_volname)
+	  notice("Volume bricks = ${newvolume_bricks}")
 	  
-	  if ($volume_bricks != '') {
-	    $bricks_array = splitbricklist($volume_bricks, $ipaddress) 
+	  if ($newvolume_bricks != '') {
+	    $newbricks_array = splitbricklist($newvolume_bricks, $ipaddress) 
 	    
 		  glusterfs::volume { $current_volname:
 		    #create_options => "replica 2 ${volume_bricks}",
-		    create_options => $volume_bricks,
+		    create_options => $newbricks_array,
 		  } ->
 		
 		  exec { "${current_volname}-quota-on":
@@ -58,7 +58,7 @@ define garrbox::volume (
 	      check_different   => true,
 		  } ->
 		  
-		  garrbox::brick { $bricks_array:
+		  garrbox::brick { $newbricks_array:
 		    api_host    => $api_host,
 		    api_user    => $api_user,
 		    api_passwd  => $api_passwd,
@@ -68,19 +68,19 @@ define garrbox::volume (
 	  }
   }
   elsif $operation == "addbrick" {
-    $volume_bricks = listbricks($api_host, 'oldvolume', $current_volname)
-    notice("Volume bricks = ${volume_bricks}")
+    $addvolume_bricks = listbricks($api_host, 'oldvolume', $current_volname)
+    notice("Volume bricks = ${addvolume_bricks}")
     
-    if ($volume_bricks != '') {
-      $bricks_array = split($volume_bricks, ' ') 
+    if ($addvolume_bricks != '') {
+      $addbricks_array = split($addvolume_bricks, ' ') 
       
-      exec { $bricks_array:
+      exec { $addbricks_array:
         command => "gluster add-brick ${current_volname} ${::self}",
         unless  => "gluster volume info ${current_volname} | grep '${::self}'",
         path    => [ '/usr/sbin', '/usr/bin', '/sbin', '/bin' ],
       } ->
       
-      garrbox::brick { $bricks_array:
+      garrbox::brick { $addbricks_array:
         api_host    => $api_host,
         api_user    => $api_user,
         api_passwd  => $api_passwd,

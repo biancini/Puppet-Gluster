@@ -38,8 +38,9 @@ Would result in: { 'testvolume1' => {'quota' => 10}, 'testvolume2' => {'quota' =
         volumes = JSON.parse(response.read())
       }
       
+      returnval = {}
+      
       if mountlist
-        returnval = {}
         volumes.each do |name, vol|
           if vol['status'] == 'ACT'
             returnval[name] = {}
@@ -48,14 +49,13 @@ Would result in: { 'testvolume1' => {'quota' => 10}, 'testvolume2' => {'quota' =
           end
         end
       else
-        returnval = {}
-        
         if newbricks
           volumes.each do |name, vol|
             if vol['status'] == 'ACT'
               addvol = false
               vol['bricks'].each do |brick|
                 if brick['status'] == 'EXS'
+                  debug "Brick " + brick['host'] +  ":" + brick['brick_dir'] + " has status EXS"
                   addvol = true
                 end
               end

@@ -19,7 +19,7 @@
     "manifests/classes/volumes.pp": "f2a14ba289a4a301562192aba1150428",
     "manifests/definitions/brick.pp": "ddc0811adedbee9441e1a16ca150f798",
     "manifests/definitions/mount.pp": "0f735fbd111458011cc17c92abbf8c0b",
-    "manifests/definitions/volume.pp": "742988dbd10626ffb18451f8d95d6976",
+    "manifests/definitions/volume.pp": "3f68e828346d806ea2e5e9ab7567ef7f",
     "manifests/init.pp": "1ef6a7dc6bfbf031f46464c05dd82eeb"
   },
   "types": [

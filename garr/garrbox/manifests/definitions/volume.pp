@@ -74,9 +74,9 @@ define garrbox::volume (
     if ($addvolume_bricks != '') {
       $addbricks_array = split($addvolume_bricks, ' ') 
       
-      exec { $addbricks_array:
-        command => "gluster add-brick ${current_volname} ${::self}",
-        unless  => "gluster volume info ${current_volname} | grep '${::self}'",
+      exec { "Add required bricks":
+        command => "gluster volume add-brick ${current_volname} ${addbricks_array}",
+        unless  => "gluster volume info ${current_volname} | grep '${addbricks_array}'",
         path    => [ '/usr/sbin', '/usr/bin', '/sbin', '/bin' ],
       } ->
       

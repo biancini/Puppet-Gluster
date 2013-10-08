@@ -11,7 +11,7 @@
     "Modulefile": "5b368596c17d934903cfa8e4ccee4466",
     "lib/puppet/parser/functions/concat.rb": "23768f6b9b4d7d038cbec53c66f8df36",
     "lib/puppet/parser/functions/keys.rb": "01461e689853b22af8d3ca075a14c526",
-    "lib/puppet/parser/functions/listbricks.rb": "80ec05ddc3123fd39e7aeb6beb9207e9",
+    "lib/puppet/parser/functions/listbricks.rb": "ce7d99e80c47ea44c1a652d02c5f8023",
     "lib/puppet/parser/functions/listvolumes.rb": "75ab0ea0f564499b6c6f18fcc4a25019",
     "lib/puppet/parser/functions/splitbricklist.rb": "4208d9cf72f3454724a7dd7d36c6c489",
     "lib/puppet/type/post_restapi.rb": "389d6b58c747d17c365c605a5b400633",

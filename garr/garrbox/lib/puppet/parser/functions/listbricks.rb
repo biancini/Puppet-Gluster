@@ -73,11 +73,8 @@ Would result in: [ "/media/brick1", "/media/brick2" ]
             vol['bricks'].each do |brick|
               if brick['status'] == 'EXS'
                 returnval = returnval + ' ' + brick['host'] + ":" + brick['brick_dir']
-              else
-                allbricks = false
               end
             end
-            returnval = '' unless allbricks
           end
         end
       	

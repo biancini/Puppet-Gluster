@@ -13,13 +13,13 @@
     "lib/puppet/parser/functions/keys.rb": "01461e689853b22af8d3ca075a14c526",
     "lib/puppet/parser/functions/listbricks.rb": "ce7d99e80c47ea44c1a652d02c5f8023",
     "lib/puppet/parser/functions/listvolumes.rb": "75ab0ea0f564499b6c6f18fcc4a25019",
-    "lib/puppet/parser/functions/splitbricklist.rb": "4208d9cf72f3454724a7dd7d36c6c489",
+    "lib/puppet/parser/functions/splitbricklist.rb": "421e8dcc3deb42a5aa2e91da8083d442",
     "lib/puppet/type/post_restapi.rb": "389d6b58c747d17c365c605a5b400633",
     "manifests/classes/mounts.pp": "0993da55fd040bbd872aa2c08db01418",
     "manifests/classes/volumes.pp": "f2a14ba289a4a301562192aba1150428",
     "manifests/definitions/brick.pp": "ddc0811adedbee9441e1a16ca150f798",
     "manifests/definitions/mount.pp": "0f735fbd111458011cc17c92abbf8c0b",
-    "manifests/definitions/volume.pp": "3f68e828346d806ea2e5e9ab7567ef7f",
+    "manifests/definitions/volume.pp": "82918cc18d0b65886b78f9d002f945e7",
     "manifests/init.pp": "1ef6a7dc6bfbf031f46464c05dd82eeb"
   },
   "types": [

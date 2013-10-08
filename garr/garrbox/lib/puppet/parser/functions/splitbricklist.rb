@@ -14,13 +14,15 @@ Would result in: ["/media/volprova1"]
       "given (#{arguments.size} for 2)") if arguments.size < 2
 
     bricklist = arguments[0]
-    filterip  = arguments[1]
+    filterip = ''
+    
+    filterip  = arguments[1] if argument[1]
     
     returnval = []
     brickv = bricklist.split(' ')
     brickv.each do |curbrick|
       values = curbrick.split(':')
-      if values[0] == filterip
+      if fitlerip != '' and values[0] == filterip
         returnval.push(values[1])
       end
     end

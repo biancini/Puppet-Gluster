@@ -32,8 +32,8 @@ define garrbox::volume (
 	    $newbricks_array = splitbricklist($newvolume_bricks, $ipaddress) 
 	    
 		  glusterfs::volume { $current_volname:
-		    #create_options => "replica 2 ${volume_bricks}",
-		    create_options => $newbricks_array,
+		    #create_options => "replica 2 ${newvolume_bricks}",
+		    create_options => $newvolume_bricks,
 		  } ->
 		
 		  exec { "${current_volname}-quota-on":
@@ -44,12 +44,12 @@ define garrbox::volume (
 		  
 		  exec { "${current_volname}-quota":
 		    command => "gluster volume quota ${current_volname} limit-usage / ${current_quota}GB",
-		    unless  => "gluster volume info ${current_volname} | grep 'features.limit-usage: /:${current_quota}GB'",
+		    unless  => "gluster volume info ${current_volname} | grep 'features.limit-usage:' | grep  '/:${current_quota}GB'",
 		    path    => [ '/usr/sbin', '/usr/bin', '/sbin', '/bin' ],
 		  } ->
 		  
 		  post_restapi { "Update volume $name":
-	      url               => "${api_host}/garrbox/api/volumes",
+	      url               => "${api_host}/garrbox/api/volumes/",
 	      body              => "{ '${name}' => { 'status' => 'ACT' } }",
 	      user              => $api_user,
 	      password          => $api_passwd,

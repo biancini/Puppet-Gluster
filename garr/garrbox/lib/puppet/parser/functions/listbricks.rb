@@ -1,3 +1,7 @@
+require 'openssl'
+require 'open-uri'
+require 'json'
+
 module Puppet::Parser::Functions
   newfunction(:listbricks, :type => :rvalue, :doc => <<-EOS
 This function generates a list of Gluster bricks by host or by volume interrogating a MySQL database.
@@ -29,8 +33,7 @@ Would result in: [ "/media/brick1", "/media/brick2" ]
     debug "Called function with parameters: filterf = #{filterf}, filterv = #{filterv}, api_host = #{api_host}"
     
     begin
-      require 'open-uri'
-      require 'json'
+      ::OpenSSL::SSL.const_set :VERIFY_PEER, OpenSSL::SSL::VERIFY_NONE
     
       volumes = {}
       uri = URI.parse("#{api_host}/garrbox/api/volumes")
@@ -84,8 +87,7 @@ Would result in: [ "/media/brick1", "/media/brick2" ]
       debug "Returned value = #{returnval}"
 	  return returnval
     rescue
-      debug "Missing required ruby packages."
-      return ""
+      raise(Puppet::ParseError, "Missing required ruby packages.")
     end
   end
 end

@@ -13,6 +13,13 @@
 #     check_different   => true,
 # }
 
+require 'openssl'
+require 'uri'
+require 'open-uri'
+require 'json'
+require 'net/http'
+require 'net/https'
+              
 module Puppet
 
 	newtype(:post_restapi) do
@@ -29,7 +36,7 @@ module Puppet
 		newparam(:body) do
 			desc "The body for the POST request"
 		end
-
+require 'open-uri'
 		newparam(:user) do
 			desc "The user to connect to the REST service"
 		end
@@ -63,34 +70,28 @@ module Puppet
 			defaultto :insync
 			
 			def fetch(uri_str, limit = 10)
-			  require 'uri'
-              require 'net/http'
-              require 'json'
-			
 			  # You should choose better exception.
 			  raise ArgumentError, 'HTTP redirect too deep' if limit == 0
 			
-			  url = URI.parse(uri_str)
-			  req = Net::HTTP::Get.new(url.path, { 'User-Agent' => 'Puppet call to REST API' })
-			  response = Net::HTTP.start(url.host, url.port) { |http| http.request(req) }
-			  case response
-			    when Net::HTTPSuccess     then response
-			    when Net::HTTPRedirection then fetch(response['location'], limit - 1)
-			    else
-			      response.error!
-			  end
+			  ::OpenSSL::SSL.const_set :VERIFY_PEER, OpenSSL::SSL::VERIFY_NONE
+			  response = ""
+		      uri = URI.parse(uri_str)
+		      debug("Opening URL: #{uri}")
+		      uri.open { |resp|
+		        response = resp.read()
+		      }
+		      
+		      response
 			end
 			
             def post(uri_str, body, limit = 10)
-                require 'uri'
-                require 'net/http'
-                require 'json'
-
                 # You should choose better exception.
                 raise ArgumentError, 'HTTP redirect too deep' if limit == 0
 				
                 url = URI.parse(uri_str)
-                response = Net::HTTP.start(url.host, url.port)
+                response = Net::HTTP.new(url.host, url.port)
+                response.use_ssl = (url.scheme == 'https')
+				response.verify_mode = OpenSSL::SSL::VERIFY_NONE
                 req = Net::HTTP::Post.new(url.path, {'User-Agent' => 'Puppet call to REST API', 'Content-Type' =>'application/json'})
                 req.body = "[ " + body.to_json + " ]"
                 response.request(req)
@@ -100,7 +101,7 @@ module Puppet
 			    if resource[:check_field_name]
 			        begin
                         request = fetch(resource[:url])
-						response = JSON.parse(request.body)
+						response = JSON.parse(request)
                         
                         read_val     = eval("response" + resource[:check_field_name])
                         expected_val = eval(resource[:check_field_value])
@@ -132,7 +133,7 @@ module Puppet
 				begin 
                     post(resource[:url] + "/", eval(resource[:body]))
 				rescue Exception => e
-					raise Puppet::Error, "Error while executing POST #{cursql}."
+					raise Puppet::Error, "Error while executing POST #{e}."
 				end # begin
 			end # :insync 
 		end # ensure

@@ -14,7 +14,7 @@ define garrbox::brick (
 	  } ->
 	  
 	  post_restapi { "Update DB brick $name":
-	    url               => "${api_host}/garrbox/api/bricks",
+	    url               => "${api_host}/garrbox/api/bricks/",
 	    body              => "{'status' => 'EXS', 'host' => '${ipaddress}', 'brick_dir' => '${name}'}",
 	    user              => $api_user,
 	    password          => $api_passwd,
@@ -24,7 +24,7 @@ define garrbox::brick (
 	  }
   } elsif ($operation == 'activate') {
 	  post_restapi { "Activate DB brick $name":
-	    url               => "${api_host}/garrbox/api/bricks",
+	    url               => "${api_host}/garrbox/api/bricks/",
 	    body              => "{'status' => 'ACT', 'host' => '${ipaddress}', 'brick_dir' => '${name}'}",
 	    user              => $api_user,
 	    password          => $api_passwd,

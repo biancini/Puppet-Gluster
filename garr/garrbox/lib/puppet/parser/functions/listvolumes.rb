@@ -1,3 +1,7 @@
+require 'openssl'
+require 'open-uri'
+require 'json'
+      
 module Puppet::Parser::Functions
   newfunction(:listvolumes, :type => :rvalue, :doc => <<-EOS
 This function generates a list of Gluster volumes to be created by interrogating a MySQL database.
@@ -14,7 +18,7 @@ Paremeters to this function are:
 Would result in: { 'testvolume1' => {'quota' => 10}, 'testvolume2' => {'quota' => 5} }
     EOS
   ) do |arguments|
-  
+ 
     raise(Puppet::ParseError, "listvolumes(): Wrong number of arguments " +
       "given (#{arguments.size} for 1)") if arguments.size < 1
 
@@ -28,8 +32,7 @@ Would result in: { 'testvolume1' => {'quota' => 10}, 'testvolume2' => {'quota' =
     debug "Called function with parameters: mountlist = #{mountlist}, api_host = #{api_host}"
 
     begin
-      require 'open-uri'
-      require 'json'
+      ::OpenSSL::SSL.const_set :VERIFY_PEER, OpenSSL::SSL::VERIFY_NONE
     
       volumes = {}
       uri = URI.parse("#{api_host}/garrbox/api/volumes")
@@ -88,9 +91,8 @@ Would result in: { 'testvolume1' => {'quota' => 10}, 'testvolume2' => {'quota' =
 
 	  debug "Returned value = #{returnval}"
 	  return returnval
-	rescue
-      debug "Missing required ruby packages."
-      return ""
+    rescue
+      raise(Puppet::ParseError, "Missing required ruby packages.")
     end
   end
 end
